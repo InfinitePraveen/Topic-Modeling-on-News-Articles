@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>News Topic Explorer</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<main class="container">
+<header class="hero">
+<p class="eyebrow">UNSUPERVISED NLP · LDA · GENSIM</p>
+<h1>News Topic<br><span>Explorer</span></h1>
+<p class="intro">Paste a news article and discover the hidden themes identified by the trained LDA topic model.</p>
+</header>
+
+<section class="panel">
+<form method="POST">
+<label for="article">News article</label>
+<textarea id="article" name="article" placeholder="Paste a news article, headline, or paragraph here...">{{ article }}</textarea>
+<div class="form-footer"><span>Minimum 30 characters</span><button type="submit">Discover Topics →</button></div>
+</form>
+</section>
+
+{% if error %}<section class="message error">{{ error }}</section>{% endif %}
+
+{% if topics %}
+<section class="results">
+<div class="section-heading"><div><p class="eyebrow">MODEL OUTPUT</p><h2>Discovered Topics</h2></div><span class="badge">{{ topics|length }} topics</span></div>
+<div class="topic-grid">
+{% for topic in topics %}
+<article class="topic-card">
+<div class="topic-top"><span>Topic {{ topic.topic_id }}</span><strong>{{ topic.probability }}%</strong></div>
+<div class="bar"><span style="width: {{ topic.probability }}%"></span></div>
+<p class="keywords">{{ topic.keywords | join(" · ") }}</p>
+</article>
+{% endfor %}
+</div>
+</section>
+{% endif %}
+
+<footer><div><strong>Topic Modeling on News Articles</strong><br>Built with Python · Gensim · LDA · Flask</div><div class="links"><a href="https://github.com/InfinitePraveen" target="_blank">GitHub</a><a href="https://www.linkedin.com/in/infinitepraveen/" target="_blank">LinkedIn</a></div></footer>
+</main>
+</body>
+</html>
